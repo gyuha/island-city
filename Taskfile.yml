@@ -1,0 +1,61 @@
+version: '3'
+
+vars:
+  GODOT: godot
+  GUT: "{{.GODOT}} --headless -s addons/gut/gut_cmdln.gd -gexit"
+
+tasks:
+  default:
+    desc: 게임 실행 (task run과 동일)
+    cmds:
+      - task: run
+
+  run:
+    desc: 게임 실행 (scenes/main.tscn)
+    deps: [import]
+    cmds:
+      - "{{.GODOT}} --path ."
+
+  editor:
+    desc: Godot 에디터로 프로젝트 열기
+    cmds:
+      - "{{.GODOT}} --path . --editor"
+
+  import:
+    desc: 에셋 임포트 (.godot 캐시 생성·갱신)
+    cmds:
+      - "{{.GODOT}} --headless --path . --import --quit"
+
+  test:
+    desc: GUT 전체 테스트 (단위 + 통합)
+    deps: [import]
+    cmds:
+      - "{{.GUT}} -gdir=res://tests -ginclude_subdirs"
+
+  test:unit:
+    desc: GUT 단위 테스트만 (약 1초)
+    deps: [import]
+    cmds:
+      - "{{.GUT}} -gdir=res://tests/unit"
+
+  test:integration:
+    desc: GUT 통합 테스트만 (약 45초)
+    deps: [import]
+    cmds:
+      - "{{.GUT}} -gdir=res://tests/integration"
+
+  playtest:
+    desc: 자동 플레이를 화면으로 보기 (약 51초 후 자동 종료)
+    deps: [import]
+    cmds:
+      - "{{.GODOT}} --path . res://tests/playtest/playtest.tscn"
+
+  record:
+    desc: 자동 플레이 녹화 → docs/comparison/playtest.mp4 (녹화 중 다른 Godot 프로세스 금지)
+    deps: [import]
+    vars:
+      TMP: /tmp/island-city-take.avi
+    cmds:
+      - "{{.GODOT}} --path . --write-movie {{.TMP}} --fixed-fps 30 res://tests/playtest/playtest.tscn"
+      - ffmpeg -v error -y -i {{.TMP}} -c:v libx264 -crf 23 -preset medium -pix_fmt yuv420p -vf scale=1280:-2 -c:a aac -b:a 128k docs/comparison/playtest.mp4
+      - rm -f {{.TMP}}

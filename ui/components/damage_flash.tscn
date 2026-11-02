@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://ui/components/damage_flash.gd" id="1_flash"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_border"]
+draw_center = false
+border_width_left = 36
+border_width_top = 36
+border_width_right = 36
+border_width_bottom = 36
+border_color = Color(0.95, 0.12, 0.12, 0.85)
+border_blend = true
+shadow_color = Color(0.9, 0.05, 0.05, 0.45)
+shadow_size = 24
+
+[node name="DamageFlash" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_flash")
+
+[node name="BorderPanel" type="Panel" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_border")

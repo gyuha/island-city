@@ -1,0 +1,134 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Theme" path="res://ui/theme.tres" id="1_theme"]
+[ext_resource type="Script" path="res://ui/components/status_bars.gd" id="2_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1098, 0.149, 0.2196, 0.75)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.22)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0.04, 0.07, 0.12, 0.45)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_badge"]
+bg_color = Color(0.92, 0.28, 0.35, 0.95)
+corner_radius_top_left = 13
+corner_radius_top_right = 13
+corner_radius_bottom_right = 13
+corner_radius_bottom_left = 13
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_bar_bg"]
+bg_color = Color(0.06, 0.09, 0.14, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_bar_fill"]
+bg_color = Color(0.92, 0.32, 0.35, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_st_badge"]
+bg_color = Color(0.22, 0.78, 0.65, 0.95)
+corner_radius_top_left = 13
+corner_radius_top_right = 13
+corner_radius_bottom_right = 13
+corner_radius_bottom_left = 13
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_st_bar_fill"]
+bg_color = Color(0.22, 0.78, 0.65, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="StatusBars" type="PanelContainer"]
+theme = ExtResource("1_theme")
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+script = ExtResource("2_script")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HpRow" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HpBadge" type="PanelContainer" parent="VBox/HpRow"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hp_badge")
+
+[node name="Label" type="Label" parent="VBox/HpRow/HpBadge"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "♥"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HpBar" type="ProgressBar" parent="VBox/HpRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 16)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_hp_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_hp_bar_fill")
+value = 100.0
+show_percentage = false
+
+[node name="HpLabel" type="Label" parent="VBox/HpRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "100 / 100"
+
+[node name="StaminaRow" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="StaminaBadge" type="PanelContainer" parent="VBox/StaminaRow"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_st_badge")
+
+[node name="Label" type="Label" parent="VBox/StaminaRow/StaminaBadge"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "✦"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StaminaBar" type="ProgressBar" parent="VBox/StaminaRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 16)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_hp_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_st_bar_fill")
+value = 100.0
+show_percentage = false
+
+[node name="StaminaLabel" type="Label" parent="VBox/StaminaRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "100 / 100"

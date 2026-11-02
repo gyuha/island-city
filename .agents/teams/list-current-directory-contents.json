@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "goal": "godot 3D RPG 게임 개발",
+  "orchestrator": {
+    "workspace": "List current directory contents",
+    "provider": "claude",
+    "model": "claude-opus-5-5"
+  },
+  "roles": [
+    {
+      "name": "gameplay",
+      "provider": "codex",
+      "model": "gpt-6.1-sol",
+      "folders": [
+        "scripts",
+        "scenes/characters"
+      ],
+      "instructions": "Godot 4 GDScript로 핵심 RPG 시스템을 만든다. 범위는 3/4 탑다운 카메라, 플레이어 이동·활공·수영, 전투, 인벤토리, 퀘스트·대화 데이터(Resource 기반)이다. 다른 역할이 붙일 수 있도록 signal과 공개 API를 문서화한다."
+    },
+    {
+      "name": "world",
+      "provider": "claude",
+      "model": "claude-sonnet-5-5",
+      "folders": [
+        "shaders",
+        "scenes/world"
+      ],
+      "instructions": "docs/art-style-prompts.md의 팔레트와 '그림자는 청록·짙은 초록' 규칙을 지켜 셀 셰이딩, 바람에 흔들리는 GPU 잔디, 얕은 곳에서 깊은 곳으로 이어지는 물, 수중 안개와 god ray 셰이더를 작성한다. 이 셰이더로 섬 지형·해변·흙길 레벨 씬을 구성한다."
+    },
+    {
+      "name": "art",
+      "provider": "antigravity",
+      "model": "gemini-4-argon-high",
+      "folders": [
+        "assets/models",
+        "assets/textures",
+        "docs/style-reference"
+      ],
+      "instructions": "docs/art-style-prompts.md의 STYLE_CORE 블록과 docs/style-reference 프레임을 기준으로 오리지널 치비 캐릭터, 나무·덤불·로우폴리 바위, 마을 건물 같은 에셋과 텍스처를 생성하고 Godot import 설정까지 정리한다. 원본 영상 속 게임의 캐릭터나 UI는 복제하지 않는다."
+    },
+    {
+      "name": "ui",
+      "provider": "antigravity",
+      "model": "gemini-3.8-flash-high",
+      "folders": [
+        "ui"
+      ],
+      "instructions": "반투명 짙은 남색 알약형 패널에 흰 텍스트를 쓰는 스타일 가이드를 따라 Control 노드 기반 HUD, 인벤토리 창, 대화창, 손그림 느낌의 월드맵 화면을 만든다. 데이터는 gameplay가 내보내는 signal로만 받는다."
+    },
+    {
+      "name": "audio",
+      "provider": "opencode",
+      "model": "opencode/big-pickle",
+      "folders": [
+        "assets/audio"
+      ],
+      "instructions": "AudioBus 레이아웃(BGM/SFX/Ambient)을 설계하고 바람·파도·발소리·UI 효과음, 지역별 BGM의 목록과 배치 사양을 만든다. AudioStreamPlayer 연결용 오디오 매니저 씬을 구성한다."
+    },
+    {
+      "name": "qa",
+      "provider": "claude",
+      "model": "claude-sonnet-5-5",
+      "folders": [
+        "tests"
+      ],
+      "instructions": "GUT 테스트와 headless Godot 실행(`godot --headless`)으로 gameplay 시스템과 씬 로딩을 검증한다. 실패 시 재현 절차와 원인 추정을 orchestrator에 보고하고, 다른 역할이 소유한 폴더는 직접 고치지 않는다."
+    }
+  ]
+}

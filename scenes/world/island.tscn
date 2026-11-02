@@ -1,0 +1,126 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/world/island.gd" id="1_island"]
+[ext_resource type="Shader" path="res://shaders/water.gdshader" id="2_water"]
+[ext_resource type="Shader" path="res://shaders/underwater.gdshader" id="3_uw"]
+[ext_resource type="Shader" path="res://shaders/vignette.gdshader" id="4_vig"]
+
+[sub_resource type="ProceduralSkyMaterial" id="Sky_mat"]
+sky_top_color = Color(0.42, 0.80, 0.86, 1)
+sky_horizon_color = Color(0.87, 0.97, 0.82, 1)
+sky_curve = 0.18
+ground_bottom_color = Color(0.34, 0.83, 0.71, 1)
+ground_horizon_color = Color(0.87, 0.97, 0.82, 1)
+ground_curve = 0.06
+
+[sub_resource type="Sky" id="Sky_1"]
+sky_material = SubResource("Sky_mat")
+
+[sub_resource type="Environment" id="Env_1"]
+background_mode = 2
+sky = SubResource("Sky_1")
+ambient_light_source = 2
+ambient_light_color = Color(0.76, 0.92, 0.88, 1)
+ambient_light_energy = 0.42
+tonemap_mode = 0
+glow_enabled = true
+glow_intensity = 0.45
+glow_strength = 0.8
+glow_bloom = 0.0
+glow_hdr_threshold = 1.0
+fog_enabled = true
+fog_light_color = Color(0.87, 0.97, 0.82, 1)
+fog_density = 0.0022
+fog_sky_affect = 0.0
+adjustment_enabled = true
+adjustment_saturation = 1.18
+
+[sub_resource type="ShaderMaterial" id="Water_mat"]
+render_priority = 0
+shader = ExtResource("2_water")
+
+[sub_resource type="PlaneMesh" id="Water_plane"]
+material = SubResource("Water_mat")
+size = Vector2(700, 700)
+
+[sub_resource type="BoxShape3D" id="Water_box"]
+size = Vector3(260, 20, 260)
+
+[sub_resource type="ShaderMaterial" id="UW_mat"]
+shader = ExtResource("3_uw")
+
+[sub_resource type="ShaderMaterial" id="Vig_mat"]
+shader = ExtResource("4_vig")
+
+[node name="Island" type="Node3D"]
+script = ExtResource("1_island")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_1")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, 0.2706, -0.4205, 0, 0.8434, 0.5373, 0.5, -0.4687, 0.7283, 0, 40, 0)
+light_color = Color(1, 0.97, 0.92, 1)
+light_energy = 0.85
+shadow_enabled = true
+shadow_blur = 1.2
+directional_shadow_mode = 1
+directional_shadow_max_distance = 90.0
+
+[node name="Water" type="MeshInstance3D" parent="."]
+mesh = SubResource("Water_plane")
+cast_shadow = 0
+
+[node name="WaterVolume" type="Area3D" parent="." groups=["water_volume"]]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WaterVolume"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
+shape = SubResource("Water_box")
+
+[node name="ScreenFX" type="Node" parent="."]
+
+[node name="VignetteLayer" type="CanvasLayer" parent="ScreenFX"]
+layer = -2
+
+[node name="Vignette" type="ColorRect" parent="ScreenFX/VignetteLayer"]
+material = SubResource("Vig_mat")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="UnderwaterLayer" type="CanvasLayer" parent="ScreenFX"]
+layer = -1
+visible = false
+
+[node name="Underwater" type="ColorRect" parent="ScreenFX/UnderwaterLayer"]
+material = SubResource("UW_mat")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PlayerSpawn" type="Marker3D" parent="."]
+transform = Transform3D(-0.98287, 0.00113, -0.18429, 0.00000, 0.99998, 0.00614, 0.18429, 0.00604, -0.98285, 5.00000, 3.10000, 40.00000)
+
+[node name="ShotMeadow" type="Marker3D" parent="."]
+transform = Transform3D(0.91268, -0.34781, 0.21456, 0.00000, 0.52503, 0.85109, -0.40866, -0.77677, 0.47918, -32.00000, 14.90000, -15.30000)
+
+[node name="ShotBeach" type="Marker3D" parent="."]
+transform = Transform3D(0.68875, -0.56463, 0.45477, 0.00000, 0.62727, 0.77880, -0.72500, -0.53640, 0.43203, -11.00000, 14.70000, 14.60000)
+
+[node name="ShotPath" type="Marker3D" parent="."]
+transform = Transform3D(-0.91915, -0.33179, 0.21234, 0.00000, 0.53904, 0.84228, -0.39392, 0.77418, -0.49546, 11.00000, 12.40000, 45.00000)
+
+[node name="ShotUnderwater" type="Marker3D" parent="."]
+transform = Transform3D(0.98639, -0.02144, 0.16300, 0.00000, 0.99146, 0.13040, -0.16440, -0.12862, 0.97797, -26.00000, -2.60000, 78.00000)
+
+[node name="ShotVillage" type="Marker3D" parent="."]
+transform = Transform3D(0.90125, -0.35436, 0.24934, 0.00000, 0.57545, 0.81784, -0.43329, -0.73708, 0.51863, 31.00000, 19.80000, 2.40000)
+

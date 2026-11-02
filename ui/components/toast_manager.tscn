@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Theme" path="res://ui/theme.tres" id="1_theme"]
+[ext_resource type="Script" path="res://ui/components/toast_manager.gd" id="2_script"]
+
+[node name="ToastManager" type="VBoxContainer"]
+mouse_filter = 2
+theme = ExtResource("1_theme")
+theme_override_constants/separation = 8
+script = ExtResource("2_script")

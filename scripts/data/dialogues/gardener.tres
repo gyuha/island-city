@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="DialogueData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/dialogue_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "gardener"
+speaker = "바람지기 모루"
+lines = PackedStringArray("섬에 온 걸 환영해! 바닷바람이 참 좋지?", "야생화 다섯 송이와 슬라임 조사를 부탁할게. E를 누르면 대화가 이어져.")
+quest_ids = PackedStringArray("flowers", "slimes")
